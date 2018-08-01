@@ -6,10 +6,8 @@ gem "sqlite3"
 gem "pry"
 gem "require_all"
 gem "rspec"
-#gem "activerecord", "4.2.5"
 gem "rake", "10.4.2"
 gem "database_cleaner"
-
-
 gem "rest-client"
 gem "colorize"
+gem "artii"

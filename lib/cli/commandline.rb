@@ -89,6 +89,7 @@ def buy_ticket
       end
     end
     puts "Thank you for your purchase"
+    puts ""
     event = Event.find_by(eid:event_id)
     if event == nil
         venue = event_data["_embedded"]["venues"][0]["name"]
