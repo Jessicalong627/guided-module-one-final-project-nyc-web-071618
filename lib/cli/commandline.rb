@@ -1,8 +1,9 @@
 @CUR_USER = nil
 
+
 def login
   puts "Enter your name or exit".blue.underline
-  username = gets.chomp.downcase
+  username = gets.chomp
   if username == "exit"
     puts "See you later!"
     exit
