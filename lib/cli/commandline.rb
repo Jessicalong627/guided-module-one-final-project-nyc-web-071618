@@ -2,7 +2,7 @@
 
 def login
   puts "Enter your name or exit".blue.underline
-  username = gets.chomp
+  username = gets.chomp.downcase
   if username == "exit"
     puts "See you later!"
     exit
@@ -29,6 +29,7 @@ def options
     puts "1. Search for an event near me.".green
     puts "2. Buy a ticket".green
     puts "3. Show my orders".green
+    puts "4. Cancel my order".green
     puts ""
     cmd = gets.chomp
       puts ""
@@ -40,6 +41,10 @@ def options
 
     elsif cmd == "3"
       show_orders
+
+    elsif cmd == "4"
+      cancel_order
+
     elsif cmd == "exit"
       login
 
@@ -90,12 +95,28 @@ def buy_ticket
         event_name =  event_data["name"]
         event = Event.create(name: event_name, venue: venue, eid: event_id)
     end
-    Order.create(user_id:@CUR_USER.id, event_id: event.id,quantity:quantity)
+    Order.create(user:@CUR_USER, event: event,quantity:quantity)
+    #user.events << event
   end
   #search api to see if event_id matches
   #if it does puts "Thank you for your purchase"
   #if it doesnt puts im sorry
 end
+
+def cancel_order
+  show_orders
+  puts "Enter order ID to cancel"
+  order_id = gets.chomp.to_i
+  order = Order.find(order_id)
+  if order
+    puts "Cancel successful"
+    @CUR_USER.orders.delete(order)
+  else
+    puts "You don't have this order"
+  end
+  #show_orders
+end
+
 
 def show_orders
   if @CUR_USER.orders == []
@@ -103,7 +124,7 @@ def show_orders
   else
     puts "Here is your order"
     @CUR_USER.orders.each do |order|
-      puts "Name:#{order.event.name} | Quantity:#{order.quantity} | Purchased date:#{order.created_at}"
+      puts "ID:#{order.id} | Name:#{order.event.name} | Quantity:#{order.quantity} | Purchased date:#{order.created_at}"
     end
   end
   puts ""
