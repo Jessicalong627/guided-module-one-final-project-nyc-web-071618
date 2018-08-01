@@ -5,6 +5,6 @@ ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'db/develo
 require_all 'lib'
 
 require_relative 'key'
-
-puts API_KEY
+ActiveRecord::Base.logger = nil
+#puts API_KEY
 #API_KEY = YAML::load( File.open('config/application.yml') )

@@ -12,3 +12,4 @@ gem "database_cleaner"
 
 
 gem "rest-client"
+gem "colorize"
