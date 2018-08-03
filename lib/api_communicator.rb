@@ -11,7 +11,8 @@ def get_data_by_zip_code(postalcode)
 
   events = data["_embedded"]["events"]
   events.map do |event|
-      "#{event["id"]} #{event["name"]} #{event["_embedded"]["venues"][0]["name"]}"
+      #{}"Event ID: #{event["id"]} | Name: #{event["name"]} | Venue: #{event["_embedded"]["venues"][0]["name"]}"
+      [event["id"], event["name"],event["_embedded"]["venues"][0]["name"], 40]
   end
 end
 

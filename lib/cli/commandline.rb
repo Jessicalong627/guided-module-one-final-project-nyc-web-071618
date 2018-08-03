@@ -2,6 +2,7 @@
 
 
 def login
+  puts " "
   puts "Enter your name or exit".blue.underline
   username = gets.chomp
   if username == "exit"
@@ -19,7 +20,25 @@ def login
 end
 
 def welcome
-  puts "Welcome, #{login}!"
+  a = Artii::Base.new
+  puts "
+  _______       __
+//   ------.   / ._`_
+|  //         ~--~    \\
+| |             __    `.______________________^-----^
+| |  I=|=======/--\\==========================| o o o |
+\\ |  I=|=======\\__//=========================|_o_o_o_|
+\\|                   /                       ~    ~
+  \\       .---.    .
+    -----'     ~~''
+
+  ".red
+
+  name = login
+  puts a.asciify("Welcome ").blue
+  puts a.asciify("   " + name).red
+
+
   options
 end
 
@@ -59,17 +78,21 @@ end
 def search_event_near_me
   puts "Enter your zip code"
   zipcode = gets.chomp
-  array =  get_data_by_zip_code(zipcode)
-  if array.size == 0
-    puts "Please enter a valid zipcode".red
+  puts " "
+  arrays =  get_data_by_zip_code(zipcode)
+  if arrays.size == 0
+    puts "There are no events happening in this zip code".red
   else
-    puts array
+    arrays.each{|array|
+      puts "Event ID: ".green + array[0] + " | Name: ".green + array[1] + " | Venue: ".green + array[2] + " | Price: ".green + "$"+array[3].to_s
+      puts " "
+    }
   end
-  #todo get data from api
 end
 
 def get_event_id
     puts "Enter an event id"
+    puts " "
     event_id = gets.chomp
 end
 
@@ -77,19 +100,30 @@ def buy_ticket
   event_id = get_event_id
   event_data = get_data_by_id(event_id) #calling api
   if event_data == nil
-    puts "The event id is not available".red
+    puts "This event id is not available".red
   else
     quantity = 0
     while true
+      puts " "
       puts "How many tickets do you want? (Limit 5)"
       quantity = gets.chomp.to_i
       if quantity <= 0 || quantity > 5
-        puts "The quantity is invalid. Enter a new quantity".red
+        puts "This quantity is invalid. Enter a new quantity".red
       else
         break
       end
     end
-    puts "Thank you for your purchase"
+    price = 40*quantity
+    puts " "
+    puts "Are you sure you want to purchase #{quantity} ticket(s) for $#{price}? (Y/N)"
+    confirm = gets.chomp.upcase
+    if confirm == "Y"
+      puts " "
+      puts "Thank you for your purchase!".blue
+
+    else
+      return
+    end
     puts ""
     event = Event.find_by(eid:event_id)
     if event == nil
@@ -97,12 +131,8 @@ def buy_ticket
         event_name =  event_data["name"]
         event = Event.create(name: event_name, venue: venue, eid: event_id)
     end
-    Order.create(user:@CUR_USER, event: event,quantity:quantity)
-    #user.events << event
+    @CUR_USER.orders.create(user:@CUR_USER, event: event, quantity:quantity, price:price)
   end
-  #search api to see if event_id matches
-  #if it does puts "Thank you for your purchase"
-  #if it doesnt puts im sorry
 end
 
 def cancel_order
@@ -111,12 +141,12 @@ def cancel_order
   order_id = gets.chomp.to_i
   order = Order.find(order_id)
   if order
-    puts "Cancel successful"
+    puts " "
+    puts "Your order has been canceled.".underline
     @CUR_USER.orders.delete(order)
   else
     puts "You don't have this order"
   end
-  #show_orders
 end
 
 
@@ -126,10 +156,8 @@ def show_orders
   else
     puts "Here is your order"
     @CUR_USER.orders.each do |order|
-      puts "ID:#{order.id} | Name:#{order.event.name} | Quantity:#{order.quantity} | Purchased date:#{order.created_at}"
+      puts "ID:#{order.id} | Name:#{order.event.name} | Quantity:#{order.quantity} | Purchased date:#{order.created_at} | Price: $#{order.price}"
     end
   end
   puts ""
-  #todo show all of the orders belongs to user
-
 end

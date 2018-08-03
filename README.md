@@ -1,30 +1,17 @@
-# Foobar ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+# TickTicket![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
-Foobar is a Python library for dealing with word pluralization.
+TickTicket is a platform where you can see events that are happening in your zip code. You can also buy tickets to events.
 
 ## Installation
+* Bundle install to get required gems
+* [Get a Ticketmaster API key to use this package ](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/#attraction-details-v2)
+* Go into the project directory, make a new file "key.rb" in the ./config folder. Add one line "API_KEY=your_key" into the "key.rb"
 
-### Requirements
-* Linux
-* Python 3.3 and up
 
-`$ pip install foobar`
 
 ## Usage
 
-```python
-import foobar
 
-foobar.pluralize('word') # returns 'words'
-foobar.pluralize('goose') # returns 'geese'
-foobar.singularize('phenomena') # returns 'phenomenon'
-```
-
-## Development
-```
-$ virtualenv foobar
-$ . foobar/bin/activate
-$ pip install -e .
 ```
 
 ## Contributing
